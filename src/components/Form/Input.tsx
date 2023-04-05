@@ -1,30 +1,46 @@
+import { Card } from "@/context/CardContext";
 import React from "react";
+import InputMask from "react-input-mask";
+import { FieldErrors, Path, UseFormRegister } from "react-hook-form";
 
 interface InputProps {
-	label?: string;
-	name: string;
+	label: string;
+	name: Path<Card>;
 	placeholder: string;
-	srOnly?: boolean;
+	errors: FieldErrors<Card>;
+	mask: string;
+	register: UseFormRegister<Card>;
 }
 
-function Input({ label, name, srOnly, placeholder, ...props }: InputProps) {
+const Input = ({
+	label,
+	errors,
+	name,
+	mask,
+	placeholder,
+	register,
+	...props
+}: InputProps) => {
 	return (
 		<label className="block w-full mb-7">
-			<span
-				className={`text-dark-violet text-sm mb-2 block font-medium uppercase tracking-wider ${
-					srOnly && "sr-only"
-				}`}
-			>
+			<span className="text-dark-violet text-sm mb-2 block font-medium uppercase tracking-wider">
 				{label}
 			</span>
-			<input
-				className="block w-full text-base px-4 py-2 font-medium transition duration-300 ease-in-out border rounded-lg shadow-sm focus:border-dark-violet focus:shadow-[0_0_2px_2px_hsl(270,50%,72%)] outline-none hover:border-dark-violet border-gray-violet-100 text-dark-violet placeholder:text-gray-violet-100"
-				name={name}
-				{...props}
+			<InputMask
+				mask={mask}
+				maskPlaceholder={""}
 				placeholder={placeholder}
+				{...register(name)}
+				className={`input ${errors[name] && "border-red"}`}
+				{...props}
 			/>
+			{errors && (
+				<p className="text-red text-sm mt-2">{errors[name]?.message}</p>
+			)}
 		</label>
 	);
-}
+};
+
+Input.displayName = "Input";
 
 export default Input;

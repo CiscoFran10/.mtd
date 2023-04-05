@@ -1,38 +1,51 @@
 import React from "react";
-import Input from "./Input";
+import Image from "next/image";
+import Icon from "../../assets/images/icon-complete.svg";
+
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+import { Card, useCard } from "@/context/CardContext";
+import FormFields, { schema } from "./FormFields";
 
 function Form() {
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<Card>({
+		resolver: yupResolver(schema),
+		mode: "onChange",
+	});
+	const { setData, data } = useCard();
+	const [completed, setCompleted] = React.useState(true);
+
+	const onSubmit = () => {
+		setCompleted(true);
+	};
+
+	const handleComplete = () => {
+		setCompleted(false);
+	};
+
 	return (
 		<section className="flex flex-col items-center md:justify-center w-full md:min-h-screen px-8">
-			<form className="max-w-md">
-				<Input
-					label="cardholder name"
-					name="name"
-					placeholder="e.g. Jane Appleseed"
-				/>
-
-				<Input
-					label="card number"
-					name="card_number"
-					placeholder="e.g. 1234 5578 9123 0000"
-				/>
-
-				<div className="flex gap-6">
-					<fieldset className="flex gap-3">
-						<legend className="block mb-2 text-sm font-medium tracking-wider uppercase text-dark-violet ">
-							EXP.DATE (MM/YY)
-						</legend>
-						<Input label="month" name="month" placeholder="MM" srOnly />
-
-						<Input label="year" name="year" placeholder="YY" srOnly />
-					</fieldset>
-
-					<Input label="cvc" name="cvc" placeholder="e.g. 123" />
+			{!completed ? (
+				<form className="max-w-md" onSubmit={handleSubmit(onSubmit)}>
+					<FormFields register={register} errors={errors} />
+				</form>
+			) : (
+				<div className="flex flex-col gap-5 items-center md:justify-center w-full md:min-h-screen px-8 max-w-md py-[33px]">
+					<Image src={Icon} alt="violet icon with a white check mark" />
+					<h2 className="text-3xl font-medium tracking-wider">THANK YOU!</h2>
+					<p className="text-gray-violet-800">
+						We&apos;v added your card details
+					</p>
+					<button onClick={handleComplete} className="btn-primary mt-6">
+						Continue
+					</button>
 				</div>
-				<button className="bg-dark-violet text-gray-violet-100 tracking-wider w-full px-3 py-3.5 rounded-lg transition duration-300 ease-in-out hover:bg-gradient-to-r from-dark-violet to-gray-violet-300 focus:bg-gradient-to-r outline-none focus:border-dark-violet focus:shadow-[0_0_2px_2px_hsl(270,50%,72%)] hover:text-white focus:text-white">
-					Confirm
-				</button>
-			</form>
+			)}
 		</section>
 	);
 }
