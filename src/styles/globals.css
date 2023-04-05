@@ -3,7 +3,13 @@
 @tailwind utilities;
 
 @layer base {
-  body {
-    @apply bg-white text-lg font-medium text-black;
-  }
+	body {
+		@apply text-lg font-medium text-black bg-white;
+	}
+}
+
+@layer utilities {
+	.shadow {
+		@apply shadow-[0_-85px_0_-0_#fff_inset] lg:shadow-[-200px_0_0_-0px_#fff_inset] md:shadow-[-100px_0_0_-0px_#fff_inset];
+	}
 }
