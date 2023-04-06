@@ -51,7 +51,7 @@ function Form() {
 				<div className="flex flex-col gap-5 items-center md:justify-center w-full md:min-h-screen px-8 max-w-md py-[33px]">
 					<Image src={Icon} alt="violet icon with a white check mark" />
 					<h2 className="text-3xl font-medium tracking-wider">THANK YOU!</h2>
-					<p className="text-gray-violet-800">
+					<p className="text-gray-violet-800 text-center">
 						We&apos;v added your card details
 					</p>
 					<button onClick={handleComplete} className="mt-6 btn-primary">
