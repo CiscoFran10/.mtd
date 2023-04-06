@@ -1,4 +1,3 @@
-import React from "react";
 import { Card } from "@/context/CardContext";
 
 import Input from "./Input";
@@ -42,31 +41,28 @@ function FormFields({ register, errors }: FormFieldsProps) {
 						<label>
 							<span className="sr-only">Month</span>
 							<InputMask
-								className="input"
+								className={`input ${errors.cc_month && "border-red"}`}
 								mask="99"
 								placeholder="MM"
 								{...register("cc_month")}
 							/>
-
-							{errors.cc_month && (
-								<p className="block">{errors.cc_month?.message}</p>
-							)}
 						</label>
 
 						<label>
 							<span className="sr-only">Year</span>
 							<InputMask
-								className="input"
+								className={`input ${errors.cc_year && "border-red"}`}
 								mask="99"
 								placeholder="YY"
 								{...register("cc_year")}
 							/>
-
-							{errors.cc_year && (
-								<p className="block">{errors.cc_year?.message}</p>
-							)}
 						</label>
 					</div>
+					{(errors.cc_month || errors.cc_year) && (
+						<p className="text-red text-sm mt-2">
+							{errors.cc_month?.message || errors.cc_year?.message}
+						</p>
+					)}
 				</fieldset>
 
 				<Input
@@ -90,8 +86,19 @@ export const schema = yup.object().shape({
 	cc_number: yup
 		.string()
 		.required("Can't be blank")
-		.matches(/[0-9]/, "Wrong format, numbers only"),
-	cc_month: yup.number().max(12, "o ano tem 12 messes porra").min(1).required("Can't be blank"),
-	cc_year: yup.string().required("Can't be blank"),
+		.matches(/^[\d ]*$/, "Wrong format, numbers only"),
+	cc_month: yup
+		.number()
+		.transform((value) => (Number.isNaN(value) ? null : value))
+		.nullable()
+		.required("Can't be blank")
+		.max(12, "Invalid exp. date")
+		.min(1),
+	cc_year: yup
+		.number()
+		.transform((value) => (Number.isNaN(value) ? null : value))
+		.nullable()
+		.required("Can't be blank")
+		.min(23, "Invalid year"),
 	cc_cvc: yup.string().required("Can't be blank"),
 });

@@ -12,26 +12,39 @@ function Form() {
 	const {
 		register,
 		handleSubmit,
+		watch,
+		reset,
 		formState: { errors },
 	} = useForm<Card>({
 		resolver: yupResolver(schema),
-		mode: "onChange",
 	});
-	const { setData, data } = useCard();
-	const [completed, setCompleted] = React.useState(true);
+	const { setData } = useCard();
+	const [completed, setCompleted] = React.useState(false);
+
+	React.useEffect(() => {
+		const subscription = watch((value) => {
+			if (Object.values(value).length > 0) setData(value as Card);
+		});
+		return () => subscription.unsubscribe();
+	}, [watch, setData]);
+
+	const handleComplete = () => {
+		setCompleted(false);
+		setData(null);
+		reset();
+	};
 
 	const onSubmit = () => {
 		setCompleted(true);
 	};
 
-	const handleComplete = () => {
-		setCompleted(false);
-	};
-
 	return (
-		<section className="flex flex-col items-center md:justify-center w-full md:min-h-screen px-8">
+		<section className="flex flex-col items-center w-full px-8 md:justify-center md:min-h-screen">
 			{!completed ? (
-				<form className="max-w-md" onSubmit={handleSubmit(onSubmit)}>
+				<form
+					className="max-w-md animate-[fade-in_0.7s_ease_forwards] translate-x-40 opacity-0"
+					onSubmit={handleSubmit(onSubmit)}
+				>
 					<FormFields register={register} errors={errors} />
 				</form>
 			) : (
@@ -41,7 +54,7 @@ function Form() {
 					<p className="text-gray-violet-800">
 						We&apos;v added your card details
 					</p>
-					<button onClick={handleComplete} className="btn-primary mt-6">
+					<button onClick={handleComplete} className="mt-6 btn-primary">
 						Continue
 					</button>
 				</div>
