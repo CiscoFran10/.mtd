@@ -39,7 +39,7 @@ function Form() {
 	};
 
 	return (
-		<section className="flex flex-col items-center w-full px-8 md:justify-center md:min-h-screen">
+		<section className="flex flex-col items-center w-full px-8 py-10 md:py-0 md:justify-center md:min-h-screen">
 			{!completed ? (
 				<form
 					className="max-w-md animate-[fade-in_0.7s_ease_forwards] translate-x-40 opacity-0"

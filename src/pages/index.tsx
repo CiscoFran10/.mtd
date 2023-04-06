@@ -12,7 +12,7 @@ export default function Home() {
 				<meta name="viewport" content="width=device-width, initial-scale=1" />
 				<link rel="icon" href="/favicon.ico" />
 			</Head>
-			<main className="w-full min-h-screen grid grid-cols-1 md:grid-cols-[1.5fr_2fr] ">
+			<main className="w-full min-h-screen grid grid-cols-1 md:grid-cols-[1.5fr_2fr] overflow-hidden">
 				<Cards />
 				<Form />
 			</main>

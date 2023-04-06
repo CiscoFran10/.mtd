@@ -14,7 +14,7 @@
 	}
 
 	.card {
-		@apply flex flex-col w-[min(300px,100%)] sm:w-[350px] lg:w-[440px] aspect-video justify-center font-normal text-white bg-no-repeat bg-cover rounded-xl overflow-hidden shadow-xl;
+		@apply flex flex-col w-[min(300px,100%)] sm:w-[350px] lg:w-[440px] aspect-video justify-center font-normal text-white bg-no-repeat bg-center bg-cover rounded-xl overflow-hidden shadow-xl;
 	}
 
 	.input {
